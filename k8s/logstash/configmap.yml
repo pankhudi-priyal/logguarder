@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-config
+  namespace: logguard
+data:
+  logstash.yml: |
+    http.host: "0.0.0.0"
+    xpack.monitoring.enabled: false
+    log.level: warn
+
+  logstash.conf: |
+    input {
+      beats {
+        port => 5044
+      }
+    }
+
+    filter {
+      grok {
+        match => {
+          "message" => "%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:level} %{GREEDYDATA:log_message}"
+        }
+        tag_on_failure => ["_grokparsefailure"]
+      }
+      date {
+        match => ["timestamp", "yyyy-MM-dd HH:mm:ss,SSS", "yyyy-MM-dd HH:mm:ss"]
+        target => "@timestamp"
+        remove_field => ["timestamp"]
+      }
+      mutate {
+        add_field => { "service" => "logguard-app" }
+        add_field => { "environment" => "kubernetes" }
+      }
+      if [level] == "ERROR" {
+        mutate { add_tag => ["alert"] }
+      }
+    }
+
+    output {
+      elasticsearch {
+        hosts => ["http://elasticsearch:9200"]
+        index => "logguard-%{+YYYY.MM.dd}"
+      }
+    }

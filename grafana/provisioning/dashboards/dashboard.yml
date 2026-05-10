@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: LogGuard
+    orgId: 1
+    folder: LogGuard
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 30
+    options:
+      path: /etc/grafana/provisioning/dashboards

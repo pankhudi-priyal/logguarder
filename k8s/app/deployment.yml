@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logguard-app
+  namespace: logguard
+  labels:
+    app: logguard-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logguard-app
+  template:
+    metadata:
+      labels:
+        app: logguard-app
+    spec:
+      containers:
+        - name: logguard-app
+          image: DOCKER_USERNAME/logguard-app:latest   # CI updates this tag automatically
+          ports:
+            - containerPort: 5001
+          env:
+            - name: LOG_FILE
+              value: /var/log/app/app.log
+          volumeMounts:
+            - name: app-logs
+              mountPath: /var/log/app
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5001
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5001
+            initialDelaySeconds: 15
+            periodSeconds: 20
+      volumes:
+        - name: app-logs
+          emptyDir: {}

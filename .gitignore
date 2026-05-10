@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+.DS_Store
+*.log
+node_modules/
+.pytest_cache/
+elk/logstash/data/
+es-data/
