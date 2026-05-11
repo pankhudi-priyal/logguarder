@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: logguard-app
-          image: DOCKER_USERNAME/logguard-app:latest   # CI updates this tag automatically
+          image: pankhudipriyal/logguard-app:f91d9cccb7c8722b35ff5bc8f1506bd599881d54
           ports:
             - containerPort: 5001
           env:
