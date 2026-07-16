@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: logguard-app
-          image: pankhudipriyal/logguard-app:4a19130cc17d152ca0916326e921dbdc25061156
+          image: pankhudipriyal/logguard-app:c6cb5cd1de2e91aba0e30dfefc9a1c29d86650a5
           ports:
             - containerPort: 5001
           env:
