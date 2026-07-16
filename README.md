@@ -1,6 +1,5 @@
 # LogGuard – Automated Log Monitoring and Incident Detection System
 
-**Team:** Pankhudi Priyal (1MS24CS127) · Purugulla Tanvi (1MS24CS143)
 
 A production-style DevOps project that demonstrates centralized log collection, real-time monitoring, CI/CD automation, and GitOps-based deployment using Kubernetes and ArgoCD.
 
